@@ -1,0 +1,10 @@
+{
+    "stock": [
+        {
+            "id": 1,
+            "name": "Wrought Iron Round Krishan Frame",
+            "price": 500,
+            "image": "product1.jpg"
+        }
+    ]
+}
