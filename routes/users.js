@@ -1,16 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/User')
 const bcrypt = require('bcryptjs')
+const passport = require('passport');
 
-router.get('/login', function(req, res) {
-    res.status(200);
-    res.render('login.ejs')
-  }) 
+const User = require('../models/User')
 
 router.get('/signup', function(req, res) {
-    res.status(200);
     res.render('signup.ejs')
+  }) 
+
+router.get('/login', function(req, res) {
+    res.render('login.ejs')
   }) 
 
 //Sign Up handler
@@ -62,7 +62,6 @@ router.post('/signup', (req, res) => {
         bcrypt.genSalt(10, (err, salt) => bcrypt.hash(newUser.password, salt, (err, hash) => {
           if(err) throw err;
 
-          //Save
           newUser.password = hash;
           newUser.save()
           .then(user => {
@@ -73,6 +72,14 @@ router.post('/signup', (req, res) => {
       }
     });
   }
+});
+
+router.post('/login', (req, res, next) => {
+  passport.authenticate('local', {
+    successRedirect: '/success',
+    failureRedirect: '/errors',
+    failureFlash: true
+  })(req, res, next);
 });
 
 module.exports = router;
